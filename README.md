@@ -7,29 +7,29 @@
 <br/>
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
-## How to Get Started?
+# How to Get Started?
 
-# Create Virtual Environment 
+## Create Virtual Environment 
 ```
 python3 -m venv env
 ```
 
-# Activate the Virtual Environment
+## Activate the Virtual Environment
 ```
 source env/bin/activate
 ```
-# Install Dependencies
+## Install Dependencies
 ```
 pip install -r backend/requirements.txt
 ```
 
-# Migrate Data
+## Migrate Data
 ```
 python backend/manage.py makemigrations
 python backend/manage.py migrate
 ```
 
-# Run Local Development Server
+## Run Local Development Server
 ```
 python backend/manage.py runserver
 ```
