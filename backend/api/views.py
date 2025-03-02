@@ -34,3 +34,37 @@ class NoteDelete(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Note.objects.filter(author=user)
+
+
+from django.contrib.auth import get_user_model
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from google.auth.transport import requests
+from google.oauth2 import id_token
+from rest_framework_simplejwt.tokens import RefreshToken
+import os
+
+User = get_user_model()
+
+GOOGLE_CLIENT_ID = "271538677494-dh30ken1chq02g80b6ri8jh4jke0q0bt.apps.googleusercontent.com"
+
+
+@api_view(["POST"])
+def google_auth(request):
+    token = request.data.get("token")
+    try:
+        # Verify token with Google
+        payload = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+        email = payload.get("email")
+        name = payload.get("name")
+
+        # Get or create user
+        user, _ = User.objects.get_or_create(email=email, defaults={"username": name})
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status=400)
