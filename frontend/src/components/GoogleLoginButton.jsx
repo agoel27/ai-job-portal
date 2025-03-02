@@ -41,7 +41,6 @@ const GoogleLoginButton = () => {
 
             navigate("/");
     
-            // Redirect or update UI on successful login
         } catch (error) {
             console.error("Login failed:", error.response ? error.response.data : error.message);
         }
