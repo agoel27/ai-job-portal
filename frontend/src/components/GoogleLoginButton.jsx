@@ -36,7 +36,6 @@ const GoogleLoginButton = () => {
     
             console.log("Login successful!", res.data);
     
-            // Store access & refresh tokens in localStorage or cookies (choose one)
             localStorage.setItem("access", res.data.access);
             localStorage.setItem("refresh", res.data.refresh);
 
