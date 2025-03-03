@@ -12,12 +12,11 @@ User = get_user_model()
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def google_auth(request):
-    token = request.data.get("credential")  # Fix key name
+    token = request.data.get("credential")
     if not token:
         return Response({"error": "Token is required"}, status=400)
 
     try:
-        # Verify Google token
         payload = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_OAUTH_CLIENT_ID)
         if payload["aud"] != settings.GOOGLE_OAUTH_CLIENT_ID:
             return Response({"error": "Invalid Client ID"}, status=400)
@@ -28,7 +27,6 @@ def google_auth(request):
         print(email)
         print(name)
 
-        # Find or create user
         user, created = User.objects.get_or_create(email=email, defaults={"username": name})
         
         refresh = RefreshToken.for_user(user)
