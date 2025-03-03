@@ -19,14 +19,8 @@ from django.urls import path, include
 from api.views import google_auth, CreateUserView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from dj_rest_auth.views import LoginView
-
 # from django.urls import path
 # from .views import google_auth, CreateUserView
-
-# urlpatterns = [
-    
-#       # Create user endpoint
-# ]
 
 
 urlpatterns = [

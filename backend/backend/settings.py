@@ -26,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-_lw69-7#33!7n(u%c(g)nn7f5g2otmf2)sqks+2=949wqs2v^='
-GOOGLE_OAUTH_CLIENT_ID = "271538677494-dh30ken1chq02g80b6ri8jh4jke0q0bt.apps.googleusercontent.com"
+
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
 
 
 if not GOOGLE_OAUTH_CLIENT_ID:
@@ -65,11 +66,10 @@ SIMPLE_JWT = {
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',  # ✅ Missing from your current setup
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -100,12 +100,6 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:8000"]
-CSRF_COOKIE_NAME = "csrftoken"
-CSRF_COOKIE_HTTPONLY = False  # Allow frontend JS to read it
-CSRF_COOKIE_SECURE = False  # Set to True in production
-CSRF_COOKIE_SAMESITE = "Lax"
-
-
 
 ROOT_URLCONF = 'backend.urls'
 
