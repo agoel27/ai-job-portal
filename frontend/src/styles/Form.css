@@ -123,6 +123,7 @@ body {
 .signup-text {
   font-size: 1rem;
   margin-top: 15px;
+  font-weight: bold;
 }
 
 .signup-link {
