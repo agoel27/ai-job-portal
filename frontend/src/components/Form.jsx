@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css"
 import LoadingIndicator from "./LoadingIndicator";
+import {Link } from "react-router-dom";
 
 function Form({ route, method, title}) {
     const [username, setUsername] = useState("");
@@ -34,7 +35,8 @@ function Form({ route, method, title}) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="form-container">
+        <div>
+            <form onSubmit={handleSubmit} className="form-container">
             {title && <h2 className = "form-title">{title}</h2>}
             <h1>{name}</h1>
             <input
@@ -55,8 +57,19 @@ function Form({ route, method, title}) {
             <button className="form-button" type="submit">
                 {name}
             </button>
+            {method === "register" && (
+            <p className = "login-link">
+                Already have an account? <Link to="/login">Log In</Link>
+            </p>
+            )}
         </form>
+
+
+        </div>
     );
+
+
+    
 }
 
 export default Form
