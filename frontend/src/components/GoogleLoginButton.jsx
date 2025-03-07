@@ -5,9 +5,8 @@ import Cookies from "js-cookie";
 
 const GoogleLoginButton = () => {
   const navigate = useNavigate();
-  
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; 
 
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const handleSuccess = async (response) => {
     try {
@@ -27,7 +26,6 @@ const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
         },
       );
 
-
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
       localStorage.setItem("name", res.data.name);
@@ -40,7 +38,6 @@ const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
       );
     }
   };
-
 
   const handleFailure = (error) => {
     console.error("Google login failed:", error);
