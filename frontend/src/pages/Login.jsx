@@ -1,7 +1,13 @@
-import Form from "../components/Form"
+import Form from "../components/Form";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Register() {
-    return <Form route="/api/token/" method="login" />
+  return (
+    <div>
+      <Form route="/api/token/" method="login" />
+      <GoogleLoginButton />
+    </div>
+  );
 }
 
-export default Register
+export default Register;
