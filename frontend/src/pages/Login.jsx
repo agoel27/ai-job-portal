@@ -1,5 +1,5 @@
 import Form from "../components/Form";
-import AILogo from "../../public/AILogo.webp";
+import AILogo from "../AILogo.webp";
 import "../styles/Form.css";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 

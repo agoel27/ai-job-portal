@@ -13,11 +13,6 @@ function ProtectedRoute({ children }) {
 
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-    if (!refreshToken) {
-      console.error("No refresh token found");
-      setIsAuthorized(false);
-      return;
-    }
     try {
       const res = await api.post("/api/token/refresh/", {
         refresh: refreshToken,
@@ -39,11 +34,23 @@ function ProtectedRoute({ children }) {
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
     if (!token) {
-      console.log("No access token found");
       setIsAuthorized(false);
       return;
     }
+    const decoded = jwtDecode(token);
+    const tokenExpiration = decoded.exp;
+    const now = Date.now() / 1000;
 
+    if (tokenExpiration < now) {
+      await refreshToken();
+    } else {
+      setIsAuthorized(true);
+    }
+  };
+
+  if (isAuthorized === null) {
+    return <div>Loading...</div>;
+  }
     try {
       const decoded = jwtDecode(token);
       const tokenExpiration = decoded.exp;
@@ -68,7 +75,6 @@ function ProtectedRoute({ children }) {
   if (isAuthorized === null) {
     return <div>Loading...</div>;
   }
-
   return isAuthorized ? children : <Navigate to="/login" />;
 }
 
