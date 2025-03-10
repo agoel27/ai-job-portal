@@ -13,7 +13,6 @@ function Form({ route, method }) {
   const navigate = useNavigate();
 
   const name = method === "login" ? "Log In" : "Register";
-
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -23,6 +22,7 @@ function Form({ route, method }) {
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        localStorage.setItem("name", username);
         navigate("/");
       } else {
         navigate("/login");
@@ -44,7 +44,6 @@ function Form({ route, method }) {
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        // placeholder="Email or Username"
       />
       <div className="input-name">Password</div>
       <input
@@ -52,7 +51,6 @@ function Form({ route, method }) {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        // placeholder="Password"
       />
       <a href="#" className="forgot-password">
         Forgot Password?
