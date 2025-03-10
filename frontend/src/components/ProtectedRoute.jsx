@@ -18,7 +18,6 @@ function ProtectedRoute({ children }) {
       setIsAuthorized(false);
       return;
     }
-
     try {
       const res = await api.post("/api/token/refresh/", {
         refresh: refreshToken,
