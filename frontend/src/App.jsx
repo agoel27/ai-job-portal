@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NewJobPostTitle from "./components/NewJobPostTitle";
 
 function Logout() {
   localStorage.clear();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/new_job_post" element={<NewJobPostTitle title="Test" />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

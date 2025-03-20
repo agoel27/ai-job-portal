@@ -4,7 +4,7 @@ import api from "../api";
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
 
-function ProtectedRoute({ children }) {
+async function ProtectedRoute({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(null);
 
   useEffect(() => {
@@ -51,6 +51,7 @@ function ProtectedRoute({ children }) {
   if (isAuthorized === null) {
     return <div>Loading...</div>;
   }
+  else {
     try {
       const decoded = jwtDecode(token);
       const tokenExpiration = decoded.exp;
@@ -70,7 +71,7 @@ function ProtectedRoute({ children }) {
       console.error("Failed to decode token:", error);
       setIsAuthorized(false);
     }
-  };
+  }
 
   if (isAuthorized === null) {
     return <div>Loading...</div>;
