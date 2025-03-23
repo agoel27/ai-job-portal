@@ -1,0 +1,16 @@
+@keyframes clip-animation {
+    0% {
+        clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    }
+    100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+}
+
+.clip-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #382D5E; /* Purple background */
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); /* Initial clip (fully hidden) */
+    animation: clip-animation 0.6s linear forwards;
+}
