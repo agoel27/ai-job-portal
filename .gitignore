@@ -3,8 +3,9 @@ env
 backend/.env
 backend/backend/__pycache__
 backend/api/__pycache__
-backend/api/migrations/__pycache__
+backend/api/migrations/
 /backend/api/utils/__pycache__
 node_modules
 frontend/.env
 frontend/node_modules
+backend/db.sqlite3
