@@ -8,6 +8,34 @@ function ProtectedRoute({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(null);
 
   useEffect(() => {
+    const auth = async () => {
+      const token = localStorage.getItem(ACCESS_TOKEN);
+      if (!token) {
+        setIsAuthorized(false);
+        return;
+      }
+
+      try {
+        const decoded = jwtDecode(token);
+        const tokenExpiration = decoded.exp;
+        const now = Date.now() / 1000;
+
+        console.log("Token expiration:", new Date(tokenExpiration * 1000));
+        console.log("Current time:", new Date(now * 1000));
+
+        if (tokenExpiration < now) {
+          console.log("Token expired, refreshing...");
+          await refreshToken();
+        } else {
+          console.log("Token is valid");
+          setIsAuthorized(true);
+        }
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+        setIsAuthorized(false);
+      }
+    };
+
     auth().catch(() => setIsAuthorized(false));
   }, []);
 
@@ -31,50 +59,10 @@ function ProtectedRoute({ children }) {
     }
   };
 
-  const auth = async () => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    if (!token) {
-      setIsAuthorized(false);
-      return;
-    }
-    const decoded = jwtDecode(token);
-    const tokenExpiration = decoded.exp;
-    const now = Date.now() / 1000;
-
-    if (tokenExpiration < now) {
-      await refreshToken();
-    } else {
-      setIsAuthorized(true);
-    }
-  };
-
   if (isAuthorized === null) {
     return <div>Loading...</div>;
   }
-    try {
-      const decoded = jwtDecode(token);
-      const tokenExpiration = decoded.exp;
-      const now = Date.now() / 1000;
 
-      console.log("Token expiration:", new Date(tokenExpiration * 1000));
-      console.log("Current time:", new Date(now * 1000));
-
-      if (tokenExpiration < now) {
-        console.log("Token expired, refreshing...");
-        await refreshToken();
-      } else {
-        console.log("Token is valid");
-        setIsAuthorized(true);
-      }
-    } catch (error) {
-      console.error("Failed to decode token:", error);
-      setIsAuthorized(false);
-    }
-  };
-
-  if (isAuthorized === null) {
-    return <div>Loading...</div>;
-  }
   return isAuthorized ? children : <Navigate to="/login" />;
 }
 
