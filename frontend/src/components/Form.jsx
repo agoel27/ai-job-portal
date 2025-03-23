@@ -19,15 +19,25 @@ function Form({ route, method }) {
     e.preventDefault();
 
     try {
+      // Step 1: Register or log in the user
       const res = await api.post(route, { username, password });
+
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
         localStorage.setItem("name", username);
         navigate("/");
       } else {
-        localStorage.setItem("email", username);
-        navigate("/email-sent");
+        const emailResponse = await api.post("/send-registration-email/", {
+          email: username,
+        });
+
+        if (emailResponse.data.status === "success") {
+          localStorage.setItem("email", username);
+          navigate("/email-sent");
+        } else {
+          alert("Failed to send registration email. Please try again.");
+        }
       }
     } catch (error) {
       if (error.response) {

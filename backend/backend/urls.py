@@ -37,3 +37,10 @@ urlpatterns = [
     path("create-user/", CreateUserView.as_view(), name="create_user"),
 
 ]
+
+
+from api.views import send_registration_email
+urlpatterns += [
+    path('send-registration-email/', send_registration_email, name='send_registration_email'),
+    # Add other URL patterns here
+]

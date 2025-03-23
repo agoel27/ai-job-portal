@@ -55,6 +55,42 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 
+# views.py
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .utils.emails import send_email_via_gmail  # Import the Resend email function
+
+
+@csrf_exempt
+def send_registration_email(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            
+            # Debug: Print the email address
+            print(f"Sending email to: {email}")
+            
+            # Send email using Resend
+            response = send_email_via_gmail(
+                subject='Welcome to 1.800 Help!',
+                message='Thank you for registering with 1.800 Help. We are excited to have you on board!',
+                recipient_email=email,
+            )
+            
+            if response:
+                print("Email sent successfully:", response)  # Debug: Print the response
+                return JsonResponse({'status': 'success', 'message': 'Email sent successfully'})
+            else:
+                print("Failed to send email: No response from Resend")  # Debug: Log the failure
+                return JsonResponse({'status': 'error', 'message': 'Failed to send email'}, status=500)
+        except Exception as e:
+            print(f"Error in send_registration_email: {e}")  # Debug: Log the exception
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
 # class NoteListCreate(generics.ListCreateAPIView):
 #     serializer_class = NoteSerializer
 #     permission_classes = [IsAuthenticated]
