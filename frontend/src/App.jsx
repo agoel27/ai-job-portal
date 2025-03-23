@@ -3,6 +3,15 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import ApplicantCenter from "./pages/ApplicantCenter";
+import ApplicantJobDetails from "./pages/ApplicantJobDetails";
+import ApplicantJobPortal from "./pages/ApplicantJobPortal";
+import NewJobDetails from "./pages/NewJobDetails";
+import NewJobApplicantInfo from "./pages/NewJobApplicantInfo";
+import NewJobFinalDetails from "./pages/NewJobFinalDetails";
+import NewJobPreview from "./pages/NewJobPreview";
+import RecruiterCenter from "./pages/RecruiterCenter";
+import SubmitResume from "./pages/SubmitResume";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function Logout() {
@@ -29,8 +38,16 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/applicant-center" element={<ApplicantCenter />} />
+        <Route path="/applicant-job-details" element={<ApplicantJobDetails />} />
+        <Route path="/applicant-job-portal" element={<ApplicantJobPortal />} />
+        <Route path="/new-job-details" element={<NewJobDetails />} />
+        <Route path="/new-job-applicant-info" element={<NewJobApplicantInfo />} />
+        <Route path="/new-job-final-details" element={<NewJobFinalDetails />} />
+        <Route path="/new-job-preview" element={<NewJobPreview />} />
+        <Route path="/recruiter-center" element={<RecruiterCenter />} />
+        <Route path="/submit-resume" element={<SubmitResume />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
