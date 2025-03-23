@@ -39,8 +39,6 @@ if not GOOGLE_OAUTH_CLIENT_ID:
 SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
-RESEND_API_KEY = 're_XbeLyrEX_7r62su3FKcyaFPgob2y7YF9Cre_XVNqztSX_3KAZs1NaeXvuHZJvB2jqsCUY'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
