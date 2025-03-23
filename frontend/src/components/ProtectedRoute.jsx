@@ -50,8 +50,7 @@ async function ProtectedRoute({ children }) {
 
   if (isAuthorized === null) {
     return <div>Loading...</div>;
-  }
-  else {
+  } else {
     try {
       const decoded = jwtDecode(token);
       const tokenExpiration = decoded.exp;
