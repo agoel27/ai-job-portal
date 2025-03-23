@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
@@ -25,10 +26,22 @@ function Form({ route, method }) {
         localStorage.setItem("name", username);
         navigate("/");
       } else {
-        navigate("/login");
+        localStorage.setItem("email", username);
+        navigate("/email-sent");
       }
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        console.error("Error:", error.response.data);
+        alert(
+          error.response.data.detail || JSON.stringify(error.response.data),
+        );
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+        alert("Server did not respond. Please try again.");
+      } else {
+        console.error("Error setting up request:", error.message);
+        alert("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -36,9 +49,9 @@ function Form({ route, method }) {
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-      <h2 className="form-title">Welcome Back!</h2>
+      <h2 className="form-title">Welcome!</h2>
       <h1>{name}</h1>
-      <div className="input-name">Email or Username</div>
+      <div className="input-name">Email</div>
       <input
         className="form-input"
         type="text"
@@ -52,20 +65,26 @@ function Form({ route, method }) {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <a href="#" className="forgot-password">
-        Forgot Password?
-      </a>
-      <div className="form-extras">
-        <div className="remember-me">
-          <input
-            type="checkbox"
-            id="rememberMe"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-          />
-          <label htmlFor="rememberMe">Remember me</label>
-        </div>
-      </div>
+
+      {method === "login" && (
+        <>
+          <a href="#" className="forgot-password">
+            Forgot Password?
+          </a>
+          <div className="form-extras">
+            <div className="remember-me">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              <label htmlFor="rememberMe">Remember me</label>
+            </div>
+          </div>
+        </>
+      )}
+
       {loading && <LoadingIndicator />}
       <button className="form-button" type="submit">
         {name}
@@ -75,13 +94,19 @@ function Form({ route, method }) {
         <span className="divider-text">or</span>
         <span className="divider-line"></span>
       </div>
-      <button className="google-button">Continue with Google</button>
-      <p className="signup-text">
-        New to 1.800 Help?{" "}
-        <a href="#" className="signup-link">
-          Sign Up Here
-        </a>
-      </p>
+      <div className="google-button">
+        <GoogleLoginButton />
+      </div>
+      {method === "login" && (
+        <>
+          <p className="signup-text">
+            New to 1.800 Help?{" "}
+            <a href="/register" className="signup-link">
+              Sign Up Here
+            </a>
+          </p>
+        </>
+      )}
     </form>
   );
 }

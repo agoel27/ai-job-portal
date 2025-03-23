@@ -8,7 +8,6 @@ function Register() {
     <div className="container">
       <img src={AILogo} alt="AI Logo" className="logo" />
       <Form route="/api/token/" method="login" />
-      <GoogleLoginButton />
     </div>
   );
 }
