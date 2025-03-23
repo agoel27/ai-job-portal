@@ -30,7 +30,7 @@ pip install -r backend/requirements.txt
 ## Migrate Data
 
 ```
-python backend/manage.py makemigrations
+python backend/manage.py makemigrations api
 python backend/manage.py migrate
 ```
 

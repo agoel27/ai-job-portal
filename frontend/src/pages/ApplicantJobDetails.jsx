@@ -1,7 +1,5 @@
 function ApplicantJobDetails() {
-    return(
-        <>Applicant Job Details</>
-    );
+  return <>Applicant Job Details</>;
 }
 
 export default ApplicantJobDetails;

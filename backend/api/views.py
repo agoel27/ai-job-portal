@@ -44,12 +44,12 @@ def google_auth(request):
 
 
 from rest_framework import generics
-from django.contrib.auth.models import User
+from .models import CustomUser
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny
 
 class CreateUserView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
@@ -59,7 +59,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .utils.emails import send_email_via_gmail
-
 
 @csrf_exempt
 def send_registration_email(request):
@@ -86,3 +85,20 @@ def send_registration_email(request):
             print(f"Error in send_registration_email: {e}")  
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.response import Response
+from rest_framework import status
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        
+        user_email = request.data.get("email")
+        user = CustomUser.objects.filter(email=user_email).first()
+        
+        if user and not user.verified:
+            return Response({"error": "Email not verified"}, status=status.HTTP_403_FORBIDDEN)
+        
+        return response

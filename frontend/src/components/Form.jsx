@@ -7,7 +7,7 @@ import LoadingIndicator from "./LoadingIndicator";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Form({ route, method }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -20,20 +20,26 @@ function Form({ route, method }) {
 
     try {
       // Step 1: Register or log in the user
-      const res = await api.post(route, { username, password });
+      const res = await api.post(route, { email, password });
 
       if (method === "login") {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        localStorage.setItem("name", username);
-        navigate("/");
+        if (res.data.verified) {
+          localStorage.setItem(ACCESS_TOKEN, res.data.access);
+          localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+          localStorage.setItem("name", email);
+          navigate("/");
+        } else {
+          alert(
+            "Your account is not verified. Please check your email for verification instructions.",
+          );
+        }
       } else {
         const emailResponse = await api.post("/send-registration-email/", {
-          email: username,
+          email: email,
         });
 
         if (emailResponse.data.status === "success") {
-          localStorage.setItem("email", username);
+          localStorage.setItem("email", email);
           navigate("/email-sent");
         } else {
           alert("Failed to send registration email. Please try again.");
@@ -65,8 +71,8 @@ function Form({ route, method }) {
       <input
         className="form-input"
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <div className="input-name">Password</div>
       <input

@@ -1,7 +1,5 @@
 function SubmitResume() {
-    return(
-        <>Submit Resume</>
-    );
+  return <>Submit Resume</>;
 }
 
 export default SubmitResume;

@@ -42,10 +42,16 @@ function App() {
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/email-sent" element={<EmailSent />} />
         <Route path="/applicant-center" element={<ApplicantCenter />} />
-        <Route path="/applicant-job-details" element={<ApplicantJobDetails />} />
+        <Route
+          path="/applicant-job-details"
+          element={<ApplicantJobDetails />}
+        />
         <Route path="/applicant-job-portal" element={<ApplicantJobPortal />} />
         <Route path="/new-job-details" element={<NewJobDetails />} />
-        <Route path="/new-job-applicant-info" element={<NewJobApplicantInfo />} />
+        <Route
+          path="/new-job-applicant-info"
+          element={<NewJobApplicantInfo />}
+        />
         <Route path="/new-job-final-details" element={<NewJobFinalDetails />} />
         <Route path="/new-job-preview" element={<NewJobPreview />} />
         <Route path="/recruiter-center" element={<RecruiterCenter />} />
