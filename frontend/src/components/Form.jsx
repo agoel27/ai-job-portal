@@ -5,7 +5,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
 
-function Form({ route, method }) {
+function Form({ route, method, title }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ function Form({ route, method }) {
     <>
       {method === "register" && 
         <form onSubmit={handleSubmit} className="form-container">
-          <h1>{name}</h1>
+          <p className="form-title">{title}</p>
           <input
             className="form-input"
             type="text"
@@ -61,7 +61,7 @@ function Form({ route, method }) {
       }
       {method === "login" &&
         <form onSubmit={handleSubmit} className="form-container">
-          <h2 className="form-title">Welcome Back!</h2>
+          <p className="form-title">{title}</p>
           <h1>{name}</h1>
           <div className="input-name">Email or Username</div>
           <input
