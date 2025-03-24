@@ -39,17 +39,14 @@ def google_auth(request):
             return Response({"error": "Invalid Client ID"}, status=400)
 
         email = payload.get("email")
-        name = payload.get("name")  # Google full name
+        name = payload.get("name")
 
         print("Google Email:", email)
         print("Google Name:", name)
 
-        # Adjust this line to match your `CustomUser` model fields
         user, created = User.objects.get_or_create(email=email)
 
-        # If your model has a `full_name` or equivalent field, set it
         if created:
-            # user.full_name = name  # Change `full_name` to the correct field in your model
             user.save()
 
         refresh = RefreshToken.for_user(user)
