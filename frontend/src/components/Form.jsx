@@ -17,28 +17,43 @@ function Form({ route, method }) {
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
-
+  
     try {
       // Step 1: Register or log in the user
       const res = await api.post(route, { email, password });
-      console.log("Response:", res.data.verified);
-
+      console.log("Response:", res.data);
+  
       if (method === "login") {
-        if (res.data.verified) {
-          localStorage.setItem(ACCESS_TOKEN, res.data.access);
-          localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-          localStorage.setItem("name", email);
-          navigate("/");
-        } else {
-          alert(
-            "Your account is not verified. Please check your email for verification instructions.",
-          );
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        localStorage.setItem("name", email);
+  
+        // Step 2: Check verification status
+        const verifiedRes = await api.get("/api/check-verified/", {
+          headers: { Authorization: `Bearer ${res.data.access}` },
+        });
+  
+        console.log("Verified response:", verifiedRes.data);
+  
+        if (!verifiedRes.data.verified) {
+          // If not verified, remove tokens and show alert
+          localStorage.removeItem(ACCESS_TOKEN);
+          localStorage.removeItem(REFRESH_TOKEN);
+          localStorage.removeItem("name");
+  
+          alert("Your account is not verified. Please check your email.");
+          setLoading(false);
+          return;
         }
+  
+        // Step 3: If verified, navigate to the homepage
+        navigate("/");
       } else {
+        // Registration: Send verification email
         const emailResponse = await api.post("/send-registration-email/", {
           email: email,
         });
-
+  
         if (emailResponse.data.status === "success") {
           localStorage.setItem("email", email);
           navigate("/email-sent");
@@ -49,9 +64,11 @@ function Form({ route, method }) {
     } catch (error) {
       if (error.response) {
         console.error("Error:", error.response.data);
-        alert(
-          error.response.data.detail || JSON.stringify(error.response.data),
-        );
+  
+        if (error.response.data.email) {
+          alert(error.response.data.email.join(" "));
+          alert(error.response.data.detail || JSON.stringify(error.response.data));
+        }
       } else if (error.request) {
         console.error("No response from server:", error.request);
         alert("Server did not respond. Please try again.");
@@ -63,6 +80,7 @@ function Form({ route, method }) {
       setLoading(false);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
