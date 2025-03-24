@@ -6,7 +6,7 @@ function Register() {
   return (
     <div className="container">
       <img src="/logo.svg" alt="AI Logo" className="logo" />
-      <Form route="/api/token/" method="login" title="Welcome Back!"/>
+      <Form route="/api/token/" method="login" title="Welcome Back!" />
       <GoogleLoginButton />
     </div>
   );
