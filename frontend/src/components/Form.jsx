@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
+import {Link } from "react-router-dom";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Form({ route, method }) {
@@ -84,26 +85,54 @@ function Form({ route, method }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h2 className="form-title">Welcome!</h2>
-      <h1>{name}</h1>
-      <div className="input-name">Email</div>
-      <input
-        className="form-input"
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <div className="input-name">Password</div>
-      <input
-        className="form-input"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      {method === "login" && (
-        <>
+    <>
+      {method === "register" && 
+        <form onSubmit={handleSubmit} className="form-container">
+          <p className="form-title">{title}</p>
+          <input
+            className="form-input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+          />
+          <input
+            className="form-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+          {loading && <LoadingIndicator />}
+          <button className="form-button" type="submit">
+            {name}
+          </button>
+          <p className="signup-text">
+            Already have an account?{" "}
+            <a href="/login" className="signup-link">
+              Log in
+            </a>
+          </p>
+        </form>
+      }
+      {method === "login" &&
+        <form onSubmit={handleSubmit} className="form-container">
+          <p className="form-title">{title}</p>
+          <h1>{name}</h1>
+          <div className="input-name">Email or Username</div>
+          <input
+            className="form-input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <div className="input-name">Password</div>
+          <input
+            className="form-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <a href="#" className="forgot-password">
             Forgot Password?
           </a>
