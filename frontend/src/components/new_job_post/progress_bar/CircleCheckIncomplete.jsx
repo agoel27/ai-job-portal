@@ -1,7 +1,7 @@
 const CircleCheckIncomplete = () => {
   return (
     <div className="w-1/4 lg:w-1/5 xl:w-1/6">
-      <svg fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"

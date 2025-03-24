@@ -13,7 +13,6 @@ import NewJobPreview from "./pages/NewJobPreview";
 import RecruiterCenter from "./pages/RecruiterCenter";
 import SubmitResume from "./pages/SubmitResume";
 import ProtectedRoute from "./components/ProtectedRoute";
-import NewJobPost from "./pages/NewJobPost";
 
 function Logout() {
   localStorage.clear();

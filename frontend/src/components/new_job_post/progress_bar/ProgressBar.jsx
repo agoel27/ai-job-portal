@@ -1,8 +1,7 @@
 import CircleCheckCurrent from "./CircleCheckCurrent";
 import CircleCheckIncomplete from "./CircleCheckIncomplete";
 import CircleCheckComplete from "./CircleCheckComplete";
-import "../../styles/ProgressBar.css";
-import "../../index.css";
+import "../../../styles/ProgressBar.css";
 
 const ProgressBar = ({ progress }) => {
   return (
@@ -12,7 +11,7 @@ const ProgressBar = ({ progress }) => {
 
         <div className="w-full relative flex justify-center">
           <div
-            className={`absolute z-10 ${progress < 1 ? "bg-white" : "bg-[#382D5E]"} h-0.5 md:h-1 w-full ${progress === 1 && "clip-bar"}`}
+            className={`absolute z-10 ${progress < 1 ? "bg-white" : "bg-ai-purple-200"} h-0.5 md:h-1 w-full ${progress === 1 && "clip-bar"}`}
           />
           <div className="absolute bg-white h-0.5 md:h-1 w-full" />
         </div>
@@ -23,7 +22,7 @@ const ProgressBar = ({ progress }) => {
 
         <div className="w-full relative flex justify-center">
           <div
-            className={`absolute z-10 ${progress < 2 ? "bg-white" : "bg-[#382D5E]"} h-0.5 md:h-1 w-full ${progress === 2 && "clip-bar"}`}
+            className={`absolute z-10 ${progress < 2 ? "bg-white" : "bg-ai-purple-200"} h-0.5 md:h-1 w-full ${progress === 2 && "clip-bar"}`}
           />
           <div className="absolute bg-white h-0.5 md:h-1 w-full" />
         </div>
