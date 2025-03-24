@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
-import { Link } from "react-router-dom";
-import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Form({ route, method, title }) {
   const [email, setEmail] = useState("");
@@ -86,7 +84,7 @@ function Form({ route, method, title }) {
 
   return (
     <>
-      {method === "register" && 
+      {method === "register" && (
         <form onSubmit={handleSubmit} className="form-container">
           <p className="form-title">{title}</p>
           <input
@@ -114,9 +112,8 @@ function Form({ route, method, title }) {
             </a>
           </p>
         </form>
-      }
-      
-      {method === "login" &&
+      )}
+      {method === "login" && (
         <form onSubmit={handleSubmit} className="form-container">
           <p className="form-title">{title}</p>
           <h1>{name}</h1>
@@ -157,9 +154,6 @@ function Form({ route, method, title }) {
             <span className="divider-text">or</span>
             <span className="divider-line"></span>
           </div>
-          <div className="google-button">
-            <GoogleLoginButton />
-          </div>
           <p className="signup-text">
             New to 1.800 Help?{" "}
             <a href="/register" className="signup-link">
@@ -167,7 +161,7 @@ function Form({ route, method, title }) {
             </a>
           </p>
         </form>
-      }
+      )}
     </>
   );
 }
