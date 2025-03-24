@@ -9,6 +9,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
+
+# Google Auth
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def google_auth(request):
@@ -43,6 +45,7 @@ def google_auth(request):
         return Response({"error": str(e)}, status=400)
 
 
+# Use User Model
 from rest_framework import generics
 from .models import CustomUser
 from .serializers import UserSerializer
@@ -55,6 +58,7 @@ class CreateUserView(generics.CreateAPIView):
 
 
 
+# Send the Email for Verification
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -98,6 +102,8 @@ def send_registration_email(request):
     )
 
 
+
+# Email Verification
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 
@@ -107,39 +113,30 @@ def verify_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = CustomUser.objects.get(pk=uid)
-
-        print(f"UID: {uid}, Token: {token}")  # Debugging
-        print(f"User: {user.email}, Verified: {user.verified}")  # Debugging
-
         if default_token_generator.check_token(user, token):
             user.verified = True
             user.save()
-            print(f"User {user.email} verified successfully.")  # Debugging
             return JsonResponse({"status": "success", "message": "Email verified"})
         else:
-            print("Invalid token")  # Debugging
             return JsonResponse({"status": "error", "message": "Invalid token"}, status=400)
 
     except CustomUser.DoesNotExist:
-        print("User not found")  # Debugging
         return JsonResponse({"status": "error", "message": "User not found"}, status=400)
     except Exception as e:
-        print(f"Error: {e}")  # Debugging
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
 
 
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.response import Response
-from rest_framework import status
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        
-        user_email = request.data.get("email")
-        user = CustomUser.objects.filter(email=user_email).first()
-        
-        if user and not user.verified:
-            return Response({"error": "Email not verified"}, status=status.HTTP_403_FORBIDDEN)
-        
-        return response
+# Check Verification on Form
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status, permissions
+from rest_framework_simplejwt.tokens import RefreshToken
+
+class CheckVerifiedView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({"verified": user.verified}, status=status.HTTP_200_OK)

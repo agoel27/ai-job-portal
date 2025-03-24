@@ -21,6 +21,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from dj_rest_auth.views import LoginView
 # from django.urls import path
 # from .views import google_auth, CreateUserView
+from api.views import send_registration_email
+from api.views import verify_email
+from api.views import CheckVerifiedView
 
 
 urlpatterns = [
@@ -35,16 +38,7 @@ urlpatterns = [
     path("auth/google/", google_auth, name="google_auth"),
     path("auth/login/", LoginView.as_view(), name="rest_login"),
     path("create-user/", CreateUserView.as_view(), name="create_user"),
-
-]
-
-
-from api.views import send_registration_email
-urlpatterns += [
     path('send-registration-email/', send_registration_email, name='send_registration_email'),
-]
-
-from api.views import verify_email
-urlpatterns += [
     path('verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
+    path("api/check-verified/", CheckVerifiedView.as_view(), name="check_verified"),  # New verification check
 ]
