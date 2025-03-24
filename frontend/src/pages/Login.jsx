@@ -1,7 +1,15 @@
-import Form from "../components/Form"
+import Form from "../components/Form";
+import "../styles/Form.css";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Register() {
-    return <Form route="/api/token/" method="login" />
+  return (
+    <div className="container">
+      <img src="/logo.svg" alt="AI Logo" className="logo" />
+      <Form route="/api/token/" method="login" />
+      <GoogleLoginButton />
+    </div>
+  );
 }
 
-export default Register
+export default Register;

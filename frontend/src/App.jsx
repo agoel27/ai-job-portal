@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
@@ -5,15 +6,32 @@ import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import SubmitResume from "./pages/SubmitResume"
+=======
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import ApplicantCenter from "./pages/ApplicantCenter";
+import ApplicantJobDetails from "./pages/ApplicantJobDetails";
+import ApplicantJobPortal from "./pages/ApplicantJobPortal";
+import NewJobDetails from "./pages/NewJobDetails";
+import NewJobApplicantInfo from "./pages/NewJobApplicantInfo";
+import NewJobFinalDetails from "./pages/NewJobFinalDetails";
+import NewJobPreview from "./pages/NewJobPreview";
+import RecruiterCenter from "./pages/RecruiterCenter";
+import SubmitResume from "./pages/SubmitResume";
+import ProtectedRoute from "./components/ProtectedRoute";
+>>>>>>> main
 
 function Logout() {
-  localStorage.clear()
-  return <Navigate to="/login" />
+  localStorage.clear();
+  return <Navigate to="/login" />;
 }
 
 function RegisterAndLogout() {
-  localStorage.clear()
-  return <Register />
+  localStorage.clear();
+  return <Register />;
 }
 
 function App() {
@@ -30,13 +48,24 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+<<<<<<< HEAD
         <Route path="/submitresume" element={<SubmitResume />} />
+=======
+        <Route path="/applicant-center" element={<ApplicantCenter />} />
+        <Route path="/applicant-job-details" element={<ApplicantJobDetails />} />
+        <Route path="/applicant-job-portal" element={<ApplicantJobPortal />} />
+        <Route path="/new-job-details" element={<NewJobDetails />} />
+        <Route path="/new-job-applicant-info" element={<NewJobApplicantInfo />} />
+        <Route path="/new-job-final-details" element={<NewJobFinalDetails />} />
+        <Route path="/new-job-preview" element={<NewJobPreview />} />
+        <Route path="/recruiter-center" element={<RecruiterCenter />} />
+        <Route path="/submit-resume" element={<SubmitResume />} />
+>>>>>>> main
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
