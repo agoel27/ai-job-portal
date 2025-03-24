@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
+import {Link } from "react-router-dom";
 
-function Form({ route, method }) {
+function Form({ route, method, title }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,54 +36,87 @@ function Form({ route, method }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h2 className="form-title">Welcome Back!</h2>
-      <h1>{name}</h1>
-      <div className="input-name">Email or Username</div>
-      <input
-        className="form-input"
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <div className="input-name">Password</div>
-      <input
-        className="form-input"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <a href="#" className="forgot-password">
-        Forgot Password?
-      </a>
-      <div className="form-extras">
-        <div className="remember-me">
+    <>
+      {method === "register" && 
+        <form onSubmit={handleSubmit} className="form-container">
+          <p className="form-title">{title}</p>
           <input
-            type="checkbox"
-            id="rememberMe"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
+            className="form-input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
           />
-          <label htmlFor="rememberMe">Remember me</label>
-        </div>
-      </div>
-      {loading && <LoadingIndicator />}
-      <button className="form-button" type="submit">
-        {name}
-      </button>
-      <div className="divider">
-        <span className="divider-line"></span>
-        <span className="divider-text">or</span>
-        <span className="divider-line"></span>
-      </div>
-      <button className="google-button">Continue with Google</button>
-      <p className="signup-text">
-        New to 1.800 Help?{" "}
-        <a href="#" className="signup-link">
-          Sign Up Here
-        </a>
-      </p>
-    </form>
+          <input
+            className="form-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+          {loading && <LoadingIndicator />}
+          <button className="form-button" type="submit">
+            {name}
+          </button>
+          <p className="signup-text">
+            Already have an account?{" "}
+            <a href="/login" className="signup-link">
+              Log in
+            </a>
+          </p>
+        </form>
+      }
+      {method === "login" &&
+        <form onSubmit={handleSubmit} className="form-container">
+          <p className="form-title">{title}</p>
+          <h1>{name}</h1>
+          <div className="input-name">Email or Username</div>
+          <input
+            className="form-input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <div className="input-name">Password</div>
+          <input
+            className="form-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <a href="#" className="forgot-password">
+            Forgot Password?
+          </a>
+          <div className="form-extras">
+            <div className="remember-me">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              <label htmlFor="rememberMe">Remember me</label>
+            </div>
+          </div>
+          {loading && <LoadingIndicator />}
+          <button className="form-button" type="submit">
+            {name}
+          </button>
+          <div className="divider">
+            <span className="divider-line"></span>
+            <span className="divider-text">or</span>
+            <span className="divider-line"></span>
+          </div>
+          <button className="google-button">Continue with Google</button>
+          <p className="signup-text">
+            New to 1.800 Help?{" "}
+            <a href="/register" className="signup-link">
+              Sign Up Here
+            </a>
+          </p>
+        </form>
+      }
+    </>
   );
 }
 
