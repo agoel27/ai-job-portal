@@ -63,7 +63,7 @@ function Form({ route, method }) {
       }
     } catch (error) {
       if (error.response) {
-        console.error("Error:", error.response.data);
+        alert("Error: Bad Tokens");
 
         if (error.response.data.email) {
           alert(error.response.data.email.join(" "));
