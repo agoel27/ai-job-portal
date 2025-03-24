@@ -43,3 +43,8 @@ from api.views import send_registration_email
 urlpatterns += [
     path('send-registration-email/', send_registration_email, name='send_registration_email'),
 ]
+
+from api.views import verify_email
+urlpatterns += [
+    path('verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
+]

@@ -58,33 +58,74 @@ class CreateUserView(generics.CreateAPIView):
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse
+from .models import CustomUser
 from .utils.emails import send_email_via_gmail
 
 @csrf_exempt
 def send_registration_email(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             data = json.loads(request.body)
-            email = data.get('email')
-            
-            print(f"Sending email to: {email}")
-            
-            response = send_email_via_gmail(
-                subject='Welcome to 1.800 Help!',
-                message='Thank you for registering with 1.800 Help. We are excited to have you on board!',
+            email = data.get("email")
+
+            user = CustomUser.objects.filter(email=email).first()
+            if not user:
+                return JsonResponse(
+                    {"status": "error", "message": "User not found"}, status=400
+                )
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            verification_url = f"http://localhost:5173/verify-email/{uid}/{token}"
+
+            send_email_via_gmail(
+                subject="Verify your email",
+                message=f"Click the link to verify your account: {verification_url}",
                 recipient_email=email,
             )
-            
-            if response:
-                print("Email sent successfully:", response)
-                return JsonResponse({'status': 'success', 'message': 'Email sent successfully'})
-            else:
-                print("Failed to send email: No response from Resend") 
-                return JsonResponse({'status': 'error', 'message': 'Failed to send email'}, status=500)
+
+            return JsonResponse(
+                {"status": "success", "message": "Verification email sent"}
+            )
         except Exception as e:
-            print(f"Error in send_registration_email: {e}")  
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    return JsonResponse(
+        {"status": "error", "message": "Invalid request method"}, status=400
+    )
+
+
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def verify_email(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+
+        print(f"UID: {uid}, Token: {token}")  # Debugging
+        print(f"User: {user.email}, Verified: {user.verified}")  # Debugging
+
+        if default_token_generator.check_token(user, token):
+            user.verified = True
+            user.save()
+            print(f"User {user.email} verified successfully.")  # Debugging
+            return JsonResponse({"status": "success", "message": "Email verified"})
+        else:
+            print("Invalid token")  # Debugging
+            return JsonResponse({"status": "error", "message": "Invalid token"}, status=400)
+
+    except CustomUser.DoesNotExist:
+        print("User not found")  # Debugging
+        return JsonResponse({"status": "error", "message": "User not found"}, status=400)
+    except Exception as e:
+        print(f"Error: {e}")  # Debugging
+        return JsonResponse({"status": "error", "message": str(e)}, status=400)
 
 
 from rest_framework_simplejwt.views import TokenObtainPairView

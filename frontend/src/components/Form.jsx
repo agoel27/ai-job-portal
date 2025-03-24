@@ -21,6 +21,7 @@ function Form({ route, method }) {
     try {
       // Step 1: Register or log in the user
       const res = await api.post(route, { email, password });
+      console.log("Response:", res.data.verified);
 
       if (method === "login") {
         if (res.data.verified) {

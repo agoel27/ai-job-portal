@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import EmailSent from "./pages/EmailSent";
+import EmailVerify from "./pages/EmailVerify";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ApplicantCenter from "./pages/ApplicantCenter";
@@ -41,6 +42,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/email-sent" element={<EmailSent />} />
+        <Route path="/verify-email/:uid/:token" element={<EmailVerify />} />
         <Route path="/applicant-center" element={<ApplicantCenter />} />
         <Route
           path="/applicant-job-details"
