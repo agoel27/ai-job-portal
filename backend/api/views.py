@@ -39,12 +39,19 @@ def google_auth(request):
             return Response({"error": "Invalid Client ID"}, status=400)
 
         email = payload.get("email")
-        name = payload.get("name")
+        name = payload.get("name")  # Google full name
 
-        print(email)
-        print(name)
+        print("Google Email:", email)
+        print("Google Name:", name)
 
-        user, created = User.objects.get_or_create(email=email, defaults={"username": name})
+        # Adjust this line to match your `CustomUser` model fields
+        user, created = User.objects.get_or_create(email=email)
+
+        # If your model has a `full_name` or equivalent field, set it
+        if created:
+            # user.full_name = name  # Change `full_name` to the correct field in your model
+            user.save()
+
         refresh = RefreshToken.for_user(user)
 
         return Response({
@@ -53,10 +60,12 @@ def google_auth(request):
             "access": str(refresh.access_token),
             "refresh": str(refresh),
         })
+
     except ValueError:
         return Response({"error": "Invalid token"}, status=400)
     except Exception as e:
         return Response({"error": str(e)}, status=400)
+
 
 # -----------------------------------------
 # 2. USER REGISTRATION & CREATION
