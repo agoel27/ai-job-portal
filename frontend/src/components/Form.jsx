@@ -57,6 +57,12 @@ function Form({ route, method, title }) {
           <button className="form-button" type="submit">
             {name}
           </button>
+          <p className="signup-text">
+            Already have an account?{" "}
+            <a href="/login" className="signup-link">
+              Log in
+            </a>
+          </p>
         </form>
       }
       {method === "login" &&
@@ -103,7 +109,7 @@ function Form({ route, method, title }) {
           <button className="google-button">Continue with Google</button>
           <p className="signup-text">
             New to 1.800 Help?{" "}
-            <a href="#" className="signup-link">
+            <a href="/register" className="signup-link">
               Sign Up Here
             </a>
           </p>
