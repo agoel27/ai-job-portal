@@ -9,3 +9,4 @@ node_modules
 frontend/.env
 frontend/node_modules
 backend/db.sqlite3
+backend/__pycache__
