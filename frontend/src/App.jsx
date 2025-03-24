@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
-import Home from "./pages/Home"
-import NotFound from "./pages/NotFound"
-import ProtectedRoute from "./components/ProtectedRoute"
-import SubmitResume from "./pages/SubmitResume"
-=======
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -22,7 +13,6 @@ import NewJobPreview from "./pages/NewJobPreview";
 import RecruiterCenter from "./pages/RecruiterCenter";
 import SubmitResume from "./pages/SubmitResume";
 import ProtectedRoute from "./components/ProtectedRoute";
->>>>>>> main
 
 function Logout() {
   localStorage.clear();
@@ -49,9 +39,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
-<<<<<<< HEAD
-        <Route path="/submitresume" element={<SubmitResume />} />
-=======
         <Route path="/applicant-center" element={<ApplicantCenter />} />
         <Route path="/applicant-job-details" element={<ApplicantJobDetails />} />
         <Route path="/applicant-job-portal" element={<ApplicantJobPortal />} />
@@ -61,7 +48,6 @@ function App() {
         <Route path="/new-job-preview" element={<NewJobPreview />} />
         <Route path="/recruiter-center" element={<RecruiterCenter />} />
         <Route path="/submit-resume" element={<SubmitResume />} />
->>>>>>> main
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
