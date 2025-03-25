@@ -1,7 +1,5 @@
 function ApplicantCenter() {
-    return(
-        <>applicant center</>
-    );
+  return <>applicant center</>;
 }
 
 export default ApplicantCenter;

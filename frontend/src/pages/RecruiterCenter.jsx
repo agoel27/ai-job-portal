@@ -1,7 +1,5 @@
 function RecruiterCenter() {
-    return(
-        <>Recruiter Center</>
-    );
+  return <>Recruiter Center</>;
 }
 
 export default RecruiterCenter;

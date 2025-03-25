@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import EmailSent from "./pages/EmailSent";
+import EmailVerify from "./pages/EmailVerify";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ApplicantCenter from "./pages/ApplicantCenter";
@@ -39,11 +41,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/email-sent" element={<EmailSent />} />
+        <Route path="/verify-email/:uid/:token" element={<EmailVerify />} />
         <Route path="/applicant-center" element={<ApplicantCenter />} />
-        <Route path="/applicant-job-details" element={<ApplicantJobDetails />} />
+        <Route
+          path="/applicant-job-details"
+          element={<ApplicantJobDetails />}
+        />
         <Route path="/applicant-job-portal" element={<ApplicantJobPortal />} />
         <Route path="/new-job-details" element={<NewJobDetails />} />
-        <Route path="/new-job-applicant-info" element={<NewJobApplicantInfo />} />
+        <Route
+          path="/new-job-applicant-info"
+          element={<NewJobApplicantInfo />}
+        />
         <Route path="/new-job-final-details" element={<NewJobFinalDetails />} />
         <Route path="/new-job-preview" element={<NewJobPreview />} />
         <Route path="/recruiter-center" element={<RecruiterCenter />} />
