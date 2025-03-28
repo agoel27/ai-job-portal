@@ -84,7 +84,10 @@ function Form({ route, method, title }) {
   return (
     <>
       {method === "register" && (
-        <form onSubmit={handleSubmit} className="form-container">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center justify-center bg-white p-5 rounded-[15px] shadow-md lg:max-w-1/4 md: md:max-w-1/2 max-w-2/3 mx-auto"
+        >
           <p className="form-title">{title}</p>
           <input
             className="form-input"
@@ -119,7 +122,10 @@ function Form({ route, method, title }) {
         </form>
       )}
       {method === "login" && (
-        <form onSubmit={handleSubmit} className="form-container">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center justify-center bg-white p-5 rounded-[15px] shadow-md lg:max-w-1/4 md: md:max-w-1/2 max-w-2/3 mx-auto"
+        >
           <p className="form-title">{title}</p>
           <h1>{name}</h1>
           <div className="input-name">Email</div>
