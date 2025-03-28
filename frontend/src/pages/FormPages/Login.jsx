@@ -1,7 +1,6 @@
-import Form from "../components/Form";
-import "../styles/Form.css";
+import Form from "../../components/Form";
 
-function Register() {
+function Login() {
   return (
     <div className="">
       <img src="/logo.svg" alt="AI Logo" className="logo" />
@@ -10,4 +9,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;
