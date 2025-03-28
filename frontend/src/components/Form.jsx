@@ -79,9 +79,9 @@ function Form({ route, method, title }) {
       if (error.response) {
         if (error.response.data.email) {
           alert(error.response.data.email.join(" "));
-          alert(
-            error.response.data.detail || JSON.stringify(error.response.data),
-          );
+        }
+        if (error.response.data.password) {
+          alert(error.response.data.password.join(" "));
         }
       } else if (error.request) {
         console.error("No response from server:", error.request);

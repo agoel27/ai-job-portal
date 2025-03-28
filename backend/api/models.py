@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
     Permission,
 )
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 
@@ -35,9 +35,28 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             )
         ],
     )
-    password = models.CharField(max_length=128)
-    verified = models.BooleanField(default=False)
 
+    password = models.CharField(
+        max_length=128,
+        validators=[
+            MinLengthValidator(
+                6, message="Password must be at least 6 characters long."
+            ),
+            RegexValidator(
+                regex=r".*[A-Za-z].*",
+                message="Password must contain at least one letter.",
+            ),
+            RegexValidator(
+                regex=r".*\d.*", message="Password must contain at least one number."
+            ),
+            RegexValidator(
+                regex=r".*[@$!%%*?&].*",
+                message="Password must contain at least one special character (@$!%%*?&).",
+            ),
+        ],
+    )
+
+    verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
