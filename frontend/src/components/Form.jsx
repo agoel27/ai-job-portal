@@ -8,7 +8,9 @@ import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Form({ route, method, title }) {
   const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
@@ -18,9 +20,21 @@ function Form({ route, method, title }) {
     setLoading(true);
     e.preventDefault();
 
+    if (method === "register" && email !== confirmEmail) {
+      alert("Emails do not match.");
+      setLoading(false);
+      return;
+    }
+    if (method === "register" && password !== confirmPassword) {
+      alert("Passwords do not match.");
+      setLoading(false);
+      return;
+    }
+
     try {
       // Register or log in the user
       const res = await api.post(route, { email, password });
+
       console.log("Response:", res.data);
 
       if (method === "login") {
@@ -98,10 +112,24 @@ function Form({ route, method, title }) {
           />
           <input
             className="form-input"
+            type="text"
+            value={confirmEmail}
+            onChange={(e) => setConfirmEmail(e.target.value)}
+            placeholder="Confirm Email"
+          />
+          <input
+            className="form-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
+          />
+          <input
+            className="form-input"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
           />
           {loading && <LoadingIndicator />}
           <button className="form-button" type="submit">
