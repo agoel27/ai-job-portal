@@ -26,6 +26,7 @@ User = get_user_model()
 # 1. GOOGLE AUTHENTICATION
 # -----------------------------------------
 
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def google_auth(request):
@@ -34,7 +35,9 @@ def google_auth(request):
         return Response({"error": "Token is required"}, status=400)
 
     try:
-        payload = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_OAUTH_CLIENT_ID)
+        payload = id_token.verify_oauth2_token(
+            token, requests.Request(), settings.GOOGLE_OAUTH_CLIENT_ID
+        )
         if payload["aud"] != settings.GOOGLE_OAUTH_CLIENT_ID:
             return Response({"error": "Invalid Client ID"}, status=400)
 
@@ -44,19 +47,29 @@ def google_auth(request):
         print("Google Email:", email)
         print("Google Name:", name)
 
-        user, created = User.objects.get_or_create(email=email)
+        user = User.objects.filter(email=email).first()
 
-        if created:
-            user.save()
+        if user:
+            return Response(
+                {
+                    "error": "An account with this email already exists. Please log in using your password."
+                },
+                status=400,
+            )
+
+        user = User.objects.create(email=email)
+        user.save()
 
         refresh = RefreshToken.for_user(user)
 
-        return Response({
-            "email": str(email),
-            "name": str(name),
-            "access": str(refresh.access_token),
-            "refresh": str(refresh),
-        })
+        return Response(
+            {
+                "email": str(email),
+                "name": str(name),
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            }
+        )
 
     except ValueError:
         return Response({"error": "Invalid token"}, status=400)
@@ -68,14 +81,17 @@ def google_auth(request):
 # 2. USER REGISTRATION & CREATION
 # -----------------------------------------
 
+
 class CreateUserView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+
 # -----------------------------------------
 # 3. EMAIL VERIFICATION (SEND & VERIFY)
 # -----------------------------------------
+
 
 @csrf_exempt
 def send_registration_email(request):
@@ -86,7 +102,9 @@ def send_registration_email(request):
 
             user = CustomUser.objects.filter(email=email).first()
             if not user:
-                return JsonResponse({"status": "error", "message": "User not found"}, status=400)
+                return JsonResponse(
+                    {"status": "error", "message": "User not found"}, status=400
+                )
 
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
@@ -98,10 +116,14 @@ def send_registration_email(request):
                 recipient_email=email,
             )
 
-            return JsonResponse({"status": "success", "message": "Verification email sent"})
+            return JsonResponse(
+                {"status": "success", "message": "Verification email sent"}
+            )
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)}, status=500)
-    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=400)
+    return JsonResponse(
+        {"status": "error", "message": "Invalid request method"}, status=400
+    )
 
 
 @api_view(["GET"])
@@ -115,15 +137,21 @@ def verify_email(request, uidb64, token):
             user.save()
             return JsonResponse({"status": "success", "message": "Email verified"})
         else:
-            return JsonResponse({"status": "error", "message": "Invalid token"}, status=400)
+            return JsonResponse(
+                {"status": "error", "message": "Invalid token"}, status=400
+            )
     except CustomUser.DoesNotExist:
-        return JsonResponse({"status": "error", "message": "User not found"}, status=400)
+        return JsonResponse(
+            {"status": "error", "message": "User not found"}, status=400
+        )
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
 
 # -----------------------------------------
 # 4. CHECK EMAIL VERIFICATION STATUS
 # -----------------------------------------
+
 
 class CheckVerifiedView(APIView):
     permission_classes = [permissions.IsAuthenticated]

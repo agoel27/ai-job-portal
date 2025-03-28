@@ -1,7 +1,14 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+    Group,
+    Permission,
+)
 from django.db import models
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -18,10 +25,15 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         unique=True,
-        validators=[RegexValidator(regex=r"(^[\w\.-]+@[\w\.-]+\.\w{2,4}$)", message="Invalid email format")]
+        validators=[
+            RegexValidator(
+                regex=r"(^[\w\.-]+@[\w\.-]+\.\w{2,4}$)", message="Invalid email format"
+            )
+        ],
     )
     password = models.CharField(max_length=128)
     verified = models.BooleanField(default=False)
@@ -30,7 +42,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     groups = models.ManyToManyField(Group, related_name="customuser_set", blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name="customuser_permissions", blank=True)
+    user_permissions = models.ManyToManyField(
+        Permission, related_name="customuser_permissions", blank=True
+    )
 
     objects = CustomUserManager()
 

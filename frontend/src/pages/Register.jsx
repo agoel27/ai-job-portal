@@ -1,5 +1,4 @@
 import Form from "../components/Form";
-import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Register() {
   return (
@@ -10,7 +9,6 @@ function Register() {
         method="register"
         title="Start Today!"
       />
-      <GoogleLoginButton />
     </>
   );
 }
