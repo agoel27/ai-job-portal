@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import EmailSent from "./pages/EmailSent";
-import EmailVerify from "./pages/EmailVerify";
+import Login from "./pages/FormPages/Login";
+import Register from "./pages/FormPages/Register";
+import EmailSent from "./pages/FormPages/EmailSent";
+import EmailVerify from "./pages/FormPages/EmailVerify";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ApplicantCenter from "./pages/ApplicantCenter";

@@ -1,7 +1,14 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+    Group,
+    Permission,
+)
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinLengthValidator
 from django.utils.translation import gettext_lazy as _
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -18,19 +25,45 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         unique=True,
-        validators=[RegexValidator(regex=r"(^[\w\.-]+@[\w\.-]+\.\w{2,4}$)", message="Invalid email format")]
+        validators=[
+            RegexValidator(
+                regex=r"(^[\w\.-]+@[\w\.-]+\.\w{2,4}$)", message="Invalid email format"
+            )
+        ],
     )
-    password = models.CharField(max_length=128)
-    verified = models.BooleanField(default=False)
 
+    password = models.CharField(
+        max_length=128,
+        validators=[
+            MinLengthValidator(
+                6, message="Password must be at least 6 characters long."
+            ),
+            RegexValidator(
+                regex=r".*[A-Za-z].*",
+                message="Password must contain at least one letter.",
+            ),
+            RegexValidator(
+                regex=r".*\d.*", message="Password must contain at least one number."
+            ),
+            RegexValidator(
+                regex=r".*[@$!%%*?&].*",
+                message="Password must contain at least one special character (@$!%%*?&).",
+            ),
+        ],
+    )
+
+    verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     groups = models.ManyToManyField(Group, related_name="customuser_set", blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name="customuser_permissions", blank=True)
+    user_permissions = models.ManyToManyField(
+        Permission, related_name="customuser_permissions", blank=True
+    )
 
     objects = CustomUserManager()
 

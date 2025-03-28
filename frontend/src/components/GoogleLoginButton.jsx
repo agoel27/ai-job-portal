@@ -32,10 +32,18 @@ const GoogleLoginButton = () => {
 
       navigate("/");
     } catch (error) {
-      console.error(
-        "Login failed:",
-        error.response ? error.response.data : error.message,
-      );
+      if (
+        error.response.data.error ===
+        "An account with this email already exists. Please log in using your password."
+      ) {
+        alert(
+          "An account with this email already exists. Please log in using your password.",
+        );
+      } else {
+        alert(
+          "Error: " + (error.response.data.error || "Something went wrong."),
+        );
+      }
     }
   };
 

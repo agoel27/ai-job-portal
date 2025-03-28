@@ -34,8 +34,25 @@ python backend/manage.py makemigrations api
 python backend/manage.py migrate
 ```
 
-## Run Local Development Server
+## Run Backend Development Server
 
 ```
 python backend/manage.py runserver
+```
+
+## Run Frontend Development Server
+
+```
+cd frontend
+npm run dev
+```
+
+## Clean Code
+
+```
+cd frontend
+npm run format
+cd ..
+cd backend
+black .
 ```
