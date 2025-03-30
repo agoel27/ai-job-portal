@@ -159,3 +159,89 @@ class CheckVerifiedView(APIView):
     def get(self, request):
         user = request.user
         return Response({"verified": user.verified}, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+@csrf_exempt
+def forgot_password(request):
+    email = request.data.get("email")
+    user = CustomUser.objects.filter(email=email).first()
+
+    if not user:
+        return Response({"status": "error", "message": "User not found"}, status=400)
+
+    try:
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        reset_link = f"http://localhost:5173/reset-password/{uid}/{token}/"
+
+        send_email_via_gmail(
+            subject="Reset Your Password",
+            message=f"Click the link to reset your password: {reset_link}",
+            recipient_email=email,
+        )
+
+        return Response({"status": "success", "message": "Password reset email sent"})
+
+    except Exception as e:
+        return Response({"status": "error", "message": str(e)}, status=500)
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+@csrf_exempt
+def reset_password(request, uidb64, token):
+    try:
+        # Decode user ID
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+
+        # Validate token
+        if not default_token_generator.check_token(user, token):
+            return Response(
+                {"status": "error", "message": "Invalid or expired token"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Get new password from request
+        new_password = request.data.get("password")
+
+        # Validate password exists
+        if not new_password:
+            return Response(
+                {"status": "error", "message": "Password is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Create a temporary user instance to validate the password
+        temp_user = CustomUser(email="temp@example.com", password=new_password)
+
+        try:
+            # This will trigger all your model validators
+            temp_user.full_clean()
+        except ValidationError as e:
+            # Convert validation errors to user-friendly messages
+            errors = []
+            if "password" in e.message_dict:
+                for error in e.message_dict["password"]:
+                    errors.append(error)
+            return Response(
+                {"status": "error", "message": " ".join(errors)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # If validation passed, set and save new password
+        user.set_password(new_password)
+        user.save()
+
+        return Response(
+            {"status": "success", "message": "Password reset successful"},
+            status=status.HTTP_200_OK,
+        )
+
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        return Response(
+            {"status": "error", "message": "Invalid user"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )

@@ -26,6 +26,8 @@ from dj_rest_auth.views import LoginView
 from api.views import send_registration_email
 from api.views import verify_email
 from api.views import CheckVerifiedView
+from api.views import forgot_password
+from api.views import reset_password
 
 
 urlpatterns = [
@@ -46,7 +48,7 @@ urlpatterns = [
         name="send_registration_email",
     ),
     path("verify-email/<uidb64>/<token>/", verify_email, name="verify_email"),
-    path(
-        "api/check-verified/", CheckVerifiedView.as_view(), name="check_verified"
-    ),  # New verification check
+    path("api/check-verified/", CheckVerifiedView.as_view(), name="check_verified"),
+    path("forgot-password/", forgot_password, name="forgot-password"),
+    path("reset-password/<uidb64>/<token>/", reset_password, name="reset-password"),
 ]

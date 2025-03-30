@@ -170,7 +170,7 @@ function Form({ route, method, title }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <a href="#" className="forgot-password">
+          <a href="/forgot-password" className="forgot-password">
             Forgot Password?
           </a>
           <div className="form-extras">

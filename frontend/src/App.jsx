@@ -3,6 +3,8 @@ import Login from "./pages/FormPages/Login";
 import Register from "./pages/FormPages/Register";
 import EmailSent from "./pages/FormPages/EmailSent";
 import EmailVerify from "./pages/FormPages/EmailVerify";
+import ForgotPassword from "./pages/FormPages/ForgotPassword";
+import ResetPassword from "./pages/FormPages/ResetPassword";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ApplicantCenter from "./pages/ApplicantCenter";
@@ -38,11 +40,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/email-sent" element={<EmailSent />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/verify-email/:uid/:token" element={<EmailVerify />} />
+
         <Route path="/applicant-center" element={<ApplicantCenter />} />
         <Route
           path="/applicant-job-details"
