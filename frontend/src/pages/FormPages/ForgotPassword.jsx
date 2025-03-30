@@ -1,50 +1,65 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
+import "../../styles/Form.css";
+import LoadingIndicator from "../../components/LoadingIndicator";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const response = await api.post("/forgot-password/", { email });
+      console.log(response)
+
+
       if (response.data.status === "success") {
         localStorage.setItem("email", email);
-        navigate("/email-sent"); // Or a specific password reset email sent page
+        navigate("/email-sent");
       } else {
-        setMessage(response.data.message || "Failed to send reset link");
+        alert(response.data.message || "Failed to send reset link.");
       }
     } catch (error) {
-      setMessage(
-        error.response?.data?.message ||
-          "Error sending reset link. Please try again.",
-      );
+        console.log(error)
+      if (error.response) {
+        if (error.response.data.email) {
+          alert(error.response.data.email.join(" "));
+        }
+      } else if (error.request) {
+        alert("Server did not respond. Please try again.");
+      } else {
+        alert("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="text-center pt-8">
-      <h1>Forgot Password</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Sending..." : "Send Reset Link"}
-        </button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center justify-center bg-white p-5 rounded-[15px] shadow-md lg:max-w-1/4 md:max-w-1/2 max-w-2/3 mx-auto"
+    >
+      <p className="form-title">Forgot Password</p>
+      <div className="input-name">Email</div>
+      <input
+        className="form-input"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        required
+      />
+      {loading && <LoadingIndicator />}
+      <button className="form-button" type="submit" disabled={loading}>
+        {loading ? "Sending..." : "Send Reset Link"}
+      </button>
+    </form>
   );
 };
 

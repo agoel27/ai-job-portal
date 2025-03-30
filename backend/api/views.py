@@ -1,6 +1,8 @@
+import json
 from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.tokens import default_token_generator
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -14,7 +16,6 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from google.oauth2 import id_token
 from google.auth.transport import requests
-import json
 
 from .models import CustomUser
 from .serializers import UserSerializer
@@ -161,6 +162,11 @@ class CheckVerifiedView(APIView):
         return Response({"verified": user.verified}, status=status.HTTP_200_OK)
 
 
+# -----------------------------------------
+# 5. FORGOT PASSWORD
+# -----------------------------------------
+
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 @csrf_exempt
@@ -188,40 +194,38 @@ def forgot_password(request):
         return Response({"status": "error", "message": str(e)}, status=500)
 
 
+# -----------------------------------------
+# 6. RESET PASSWORD
+# -----------------------------------------
+
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 @csrf_exempt
 def reset_password(request, uidb64, token):
     try:
-        # Decode user ID
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = CustomUser.objects.get(pk=uid)
 
-        # Validate token
         if not default_token_generator.check_token(user, token):
             return Response(
                 {"status": "error", "message": "Invalid or expired token"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Get new password from request
         new_password = request.data.get("password")
 
-        # Validate password exists
         if not new_password:
             return Response(
                 {"status": "error", "message": "Password is required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Create a temporary user instance to validate the password
         temp_user = CustomUser(email="temp@example.com", password=new_password)
 
         try:
-            # This will trigger all your model validators
             temp_user.full_clean()
         except ValidationError as e:
-            # Convert validation errors to user-friendly messages
             errors = []
             if "password" in e.message_dict:
                 for error in e.message_dict["password"]:
@@ -231,7 +235,6 @@ def reset_password(request, uidb64, token):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # If validation passed, set and save new password
         user.set_password(new_password)
         user.save()
 
