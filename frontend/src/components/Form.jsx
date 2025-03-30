@@ -105,14 +105,14 @@ function Form({ route, method, title }) {
           <p className="form-title">{title}</p>
           <input
             className="form-input"
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
           <input
             className="form-input"
-            type="text"
+            type="email"
             value={confirmEmail}
             onChange={(e) => setConfirmEmail(e.target.value)}
             placeholder="Confirm Email"
@@ -159,7 +159,7 @@ function Form({ route, method, title }) {
           <div className="input-name">Email</div>
           <input
             className="form-input"
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

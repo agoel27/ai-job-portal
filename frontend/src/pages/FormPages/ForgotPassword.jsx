@@ -15,20 +15,18 @@ const ForgotPassword = () => {
 
     try {
       const response = await api.post("/forgot-password/", { email });
-      console.log(response)
-
 
       if (response.data.status === "success") {
         localStorage.setItem("email", email);
         navigate("/email-sent");
-      } else {
+      } else if (response.data.status === "error") {
         alert(response.data.message || "Failed to send reset link.");
       }
     } catch (error) {
-        console.log(error)
+      console.log(error);
       if (error.response) {
-        if (error.response.data.email) {
-          alert(error.response.data.email.join(" "));
+        if (error.response.data.message) {
+          alert(error.response.data.message);
         }
       } else if (error.request) {
         alert("Server did not respond. Please try again.");
@@ -53,7 +51,6 @@ const ForgotPassword = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter your email"
-        required
       />
       {loading && <LoadingIndicator />}
       <button className="form-button" type="submit" disabled={loading}>
