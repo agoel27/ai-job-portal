@@ -45,7 +45,7 @@ const EmailVerify = () => {
 
   return (
     <div className="text-center pt-8">
-      <h1>Email Verification</h1>
+      <p>Email Verification</p>
       {isLoading ? (
         <p>Verifying your email...</p>
       ) : (

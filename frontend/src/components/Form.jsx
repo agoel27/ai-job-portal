@@ -116,7 +116,7 @@ function Form({ route, method, title }) {
       {method === "login" && (
         <form onSubmit={handleSubmit} className="form-container">
           <p className="form-title">{title}</p>
-          <h1>{name}</h1>
+          <p>{name}</p>
           <div className="input-name">Email</div>
           <input
             className="form-input"
