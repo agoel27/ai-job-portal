@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.conf import settings
 
+
 def send_email_via_gmail(subject, message, recipient_email):
     try:
         send_mail(
