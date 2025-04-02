@@ -32,6 +32,25 @@ function Form({ route, method, title }) {
     }
 
     try {
+      // Check if account exists before anything else
+      if (method === "login") {
+        try {
+          const userExistsRes = await api.post("/api/check-user-exists/", {
+            email,
+          });
+          if (!userExistsRes.data.exists) {
+            alert("No account exists with this email. Please register first.");
+            setLoading(false);
+            return;
+          }
+        } catch (error) {
+          console.error("Email check failed:", error);
+          alert("Error checking email. Please try again.");
+          setLoading(false);
+          return;
+        }
+      }
+
       // Register or log in the user
       const res = await api.post(route, { email, password });
 
@@ -46,8 +65,6 @@ function Form({ route, method, title }) {
         const verifiedRes = await api.get("/api/check-verified/", {
           headers: { Authorization: `Bearer ${res.data.access}` },
         });
-
-        console.log("Verified response:", verifiedRes.data);
 
         if (!verifiedRes.data.verified) {
           // If not verified, remove tokens and show alert
