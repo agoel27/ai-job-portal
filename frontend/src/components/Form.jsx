@@ -79,9 +79,10 @@ function Form({ route, method, title }) {
       if (error.response) {
         if (error.response.data.email) {
           alert(error.response.data.email.join(" "));
-        }
-        if (error.response.data.password) {
+        } else if (error.response.data.password) {
           alert(error.response.data.password.join(" "));
+        } else {
+          alert("Email and Password do not match.");
         }
       } else if (error.request) {
         console.error("No response from server:", error.request);
