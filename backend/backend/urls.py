@@ -24,6 +24,7 @@ from dj_rest_auth.views import LoginView
 from api.views import send_registration_email
 from api.views import verify_email
 from api.views import CheckVerifiedView
+from api.views import CheckEmailExistsView
 from api.views import forgot_password
 from api.views import reset_password
 
@@ -46,6 +47,11 @@ urlpatterns = [
     ),
     path("verify-email/<uidb64>/<token>/", verify_email, name="verify_email"),
     path("api/check-verified/", CheckVerifiedView.as_view(), name="check_verified"),
+    path(
+        "api/check-user-exists/",
+        CheckEmailExistsView.as_view(),
+        name="check_user_exists",
+    ),
     path("forgot-password/", forgot_password, name="forgot-password"),
     path("reset-password/<uidb64>/<token>/", reset_password, name="reset-password"),
 ]

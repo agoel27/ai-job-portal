@@ -163,7 +163,26 @@ class CheckVerifiedView(APIView):
 
 
 # -----------------------------------------
-# 5. FORGOT PASSWORD
+# 5. CHECK IF EMAIL EXISTS
+# -----------------------------------------
+
+
+class CheckEmailExistsView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = request.data.get("email")
+        if not email:
+            return Response(
+                {"detail": "Email is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        exists = CustomUser.objects.filter(email=email).exists()
+        return Response({"exists": exists}, status=status.HTTP_200_OK)
+
+
+# -----------------------------------------
+# 6. FORGOT PASSWORD
 # -----------------------------------------
 
 
@@ -195,7 +214,7 @@ def forgot_password(request):
 
 
 # -----------------------------------------
-# 6. RESET PASSWORD
+# 7. RESET PASSWORD
 # -----------------------------------------
 
 
