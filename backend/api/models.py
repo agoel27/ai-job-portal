@@ -72,3 +72,37 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+
+class Applicant(models.Model):
+    custom_user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+    applications = [] # company names, position, etc. with status (pending, rejected, etc.)
+
+
+class Recruiter(models.Model):
+    custom_user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+    job_postings = [] # elements are jobs posted by recruiter
+    company = models.CharField(max_length=255) # company they are recruiting for
+
+class Admin(models.Model):
+    custom_user_manager = models.OneToOneField(
+        CustomUserManager,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
+    applicants = []
+    recruiters = []
+
+
