@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     Permission,
 )
 from django.db import models
+from django.conf import settings
 from django.core.validators import RegexValidator, MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
@@ -72,3 +73,30 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Job(models.Model):
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
+    description = models.TextField()
+    company_name = models.CharField(max_length=255)
+
+    # Kevin comments to remember, delete before merge
+    # on_delete=models.CASCADE means that if the user is deleted, all their jobs will be deleted too
+    # related_name='jobs_posted' allows us to access all jobs posted by a user using user.jobs_posted.all()
+    posted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jobs_posted"
+    )
+
+    applicants = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="jobs_applied", blank=True
+    )
+
+    date_posted = models.DateTimeField(auto_now_add=True)
+    salary_min = models.DecimalField(max_digits=10, decimal_places=2)
+    salary_max = models.DecimalField(max_digits=10, decimal_places=2)
+    # False means full-time
+    is_part_time = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.name} at {self.company_name} ({'Part-Time' if self.is_part_time else 'Full-Time'})"
