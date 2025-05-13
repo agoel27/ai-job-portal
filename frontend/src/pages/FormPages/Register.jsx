@@ -1,8 +1,8 @@
-<<<<<<< HEAD:frontend/src/pages/Register.jsx
+
 import { Link } from "react-router-dom";
-import Form from "../components/Form";
-import GoogleLoginButton from "../components/GoogleLoginButton";
-import { JobDetailsForm } from "../components/JobDetailsPage";
+import Form from "../../components/Form";
+import GoogleLoginButton from "../../components/GoogleLoginButton.jsx";
+import { JobDetailsForm } from "../../components/JobDetailsPage";
 
 function Register() {
   return (
@@ -32,21 +32,7 @@ function Register() {
 
       <GoogleLoginButton />
     </>
-=======
-import Form from "../../components/Form";
+  )
 
-function Register() {
-  return (
-    <div>
-      <img src="/logo.svg" alt="AI Logo" className="logo" />
-      <Form
-        route="/api/user/register/"
-        method="register"
-        title="Start Today!"
-      />
-    </div>
->>>>>>> ae1e9776b0c15db6506a65012daa2d04dc0cf923:frontend/src/pages/FormPages/Register.jsx
-  );
 }
-
 export default Register;
