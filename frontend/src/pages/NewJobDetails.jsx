@@ -7,6 +7,7 @@ const NewJobDetails = () => {
     <div className="h-screen py-[6%] xl:py-[4%] flex flex-col items-center">
       <ProgressBar progress={2} />
       <Form />
+      <JobDetailsForm />
     </div>
   );
 };
