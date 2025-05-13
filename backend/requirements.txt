@@ -13,3 +13,5 @@ dj-rest-auth
 requests
 cryptography
 google-auth
+black
+isort
