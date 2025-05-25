@@ -29,24 +29,24 @@ function Admin() {
       {loading ? (
         <p>Loading users...</p>
       ) : (
-        <table className="min-w-full table-fixed border border-gray-300">
-          <thead className="bg-gray-200">
+        <table className="min-w-full table-fixed border border-black">
+          <thead>
             <tr>
-              <th className="w-1/12 px-4 py-2 text-left font-bold border">
+              <th className="w-1/12 px-4 py-2 text-center font-bold border">
                 ID
               </th>
-              <th className="w-5/12 px-4 py-2 text-left font-bold border">
+              <th className="w-5/12 px-4 py-2 text-center font-bold border">
                 Email
               </th>
-              <th className="w-3/12 px-4 py-2 text-left font-bold border">
+              <th className="w-3/12 px-4 py-2 text-center font-bold border">
                 Verified
               </th>
-              <th className="w-3/12 px-4 py-2 text-left font-bold border">
+              <th className="w-3/12 px-4 py-2 text-center font-bold border">
                 Staff
               </th>
             </tr>
           </thead>
-          <tbody className="bg-blue-100">
+          <tbody>
             {users.map((user) => (
               <tr key={user.id} className="border-t">
                 <td className="px-4 py-2 border">{user.id}</td>
