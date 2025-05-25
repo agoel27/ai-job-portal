@@ -6,6 +6,7 @@ import EmailVerify from "./pages/FormPages/EmailVerify";
 import ForgotPassword from "./pages/FormPages/ForgotPassword";
 import ResetPassword from "./pages/FormPages/ResetPassword";
 import Home from "./pages/Home";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import ApplicantCenter from "./pages/ApplicantCenter";
 import ApplicantJobDetails from "./pages/ApplicantJobDetails";
@@ -17,6 +18,7 @@ import NewJobPreview from "./pages/NewJobPreview";
 import RecruiterCenter from "./pages/RecruiterCenter";
 import SubmitResume from "./pages/SubmitResume";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 function Logout() {
   localStorage.clear();
@@ -38,6 +40,15 @@ function App() {
             <ProtectedRoute>
               <Home />
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-dashboard"
+          element={
+            <AdminProtectedRoute>
+              <Admin />
+            </AdminProtectedRoute>
           }
         />
 

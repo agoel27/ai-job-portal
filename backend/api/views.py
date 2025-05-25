@@ -21,6 +21,12 @@ from .models import CustomUser
 from .serializers import UserSerializer
 from .utils.emails import send_email_via_gmail
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import MyTokenObtainPairSerializer
+
+from rest_framework.permissions import IsAdminUser
+
+
 User = get_user_model()
 
 # -----------------------------------------
@@ -240,7 +246,9 @@ def reset_password(request, uidb64, token):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        temp_user = CustomUser(email="temp@example.com", password=new_password)
+        temp_user = CustomUser(
+            email="temp@example.com", password=new_password, name="Temp"
+        )
 
         try:
             temp_user.full_clean()
@@ -267,3 +275,26 @@ def reset_password(request, uidb64, token):
             {"status": "error", "message": "Invalid user"},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+# -----------------------------------------
+# 8. INCREASE USER INFORMATION
+# -----------------------------------------
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
+# -----------------------------------------
+# 9. List All Users
+# -----------------------------------------
+
+
+class ListUsersView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        users = CustomUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)

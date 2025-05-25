@@ -27,12 +27,13 @@ from api.views import CheckVerifiedView
 from api.views import CheckEmailExistsView
 from api.views import forgot_password
 from api.views import reset_password
-
+from api.views import MyTokenObtainPairView
+from api.views import ListUsersView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/user/register/", CreateUserView.as_view(), name="register"),
-    path("api/token/", TokenObtainPairView.as_view(), name="get_token"),
+    path("api/token/", MyTokenObtainPairView.as_view(), name="get_token"),
     path("api/token/refresh", TokenRefreshView.as_view(), name="refresh"),
     path("api-auth/", include("rest_framework.urls")),
     path("auth/", include("dj_rest_auth.urls")),
@@ -54,4 +55,5 @@ urlpatterns = [
     ),
     path("forgot-password/", forgot_password, name="forgot-password"),
     path("reset-password/<uidb64>/<token>/", reset_password, name="reset-password"),
+    path("api/users/", ListUsersView.as_view(), name="list_users"),
 ]
